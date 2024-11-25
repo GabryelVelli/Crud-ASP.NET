@@ -1,0 +1,106 @@
+﻿@model ProvaMVC.Models.UserViewModel
+
+@{
+    ViewBag.Title = "CreateDinamico";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro Dinâmico</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<style>
+    label{
+        width:100px;
+        display:inline-block;
+    }
+</style>
+<body>
+    <form name="Form">
+
+        <h1>Cadastro Dinamico</h1>
+        <br />
+
+        <label for="ID">ID: </label>
+        <input type="text" id="ID" required="required" placeholder="1" name="ID" />
+        <br /><br />
+
+        <label for="nome">Nome: </label>
+        <input type="text" id="nome" placeholder="Gabryel" required="required" name="nome" />
+        <br /><br />
+
+        <label for="sobrenome">Sobrenome: </label>
+        <input type="text" id="sobrenome" placeholder="Velli" required="required" name="sobrenome" />
+        <br /><br />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="gabryel.boas@gmail.com" name="email" required="required" />
+        <br /><br />
+
+        <label for="date">Data de Nasc:</label>
+        <input id="datanasc" type="date" name="data" required="required">
+        <br /><br />
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="password" placeholder="******" minlength="6" required="required">
+        <br /><br />
+
+        <label for="senha">Confirmar Senha:</label>
+        <input type="password" id="senhaconfirm" placeholder="******" name="password" minlength="6" required="required">
+        <br /><br />
+
+        <input type="submit" onclick="Cadastrar(event);" value="Enviar" />
+
+    </form>
+
+    <script>
+        function Cadastrar(event) {
+            event.preventDefault();
+
+
+            var senha = document.getElementById("senha"),
+                senhaconfirm = document.getElementById("senhaconfirm"),
+                id = document.getElementById("ID"),
+                data = document.getElementById("datanasc"),
+                nome = document.getElementById("nome"),
+                sobrenome = document.getElementById("sobrenome"),
+                email = document.getElementById("email");
+
+            if (!id.value || !nome.value || !sobrenome.value || !email.value || !data.value || !senha.value || !senhaconfirm.value) {
+                alert("Todos os campos são obrigatórios!");
+                return;
+            }
+
+            if (senhaconfirm.value != senha.value) {
+                alert("Senhas diferentes!");
+            } else {
+                jQuery.ajax({
+                    url: '/UserViewModel/CreateDinamico',
+                    type: 'POST',
+                    data: {
+                        Id: id.value,
+                        FirstName: nome.value,
+                        LastName: sobrenome.value,
+                        Email: email.value,
+                        BirthDate: data.value,
+                        Password: senha.value,
+                        ConfirmPassword: senhaconfirm.value
+                    },
+                    success: function (result) {
+                        alert("Usuario Cadastrado!");
+                        debugger;
+                    },
+                    error: function () {
+                        alert("Erro, não foi possivel completar o cadastro");
+                        debugger;
+                    }
+                });
+            }
+        }
+    </script>
+    <br />
+    <br />
+    <a href="~/UserViewModel/">Usuarios Cadastrados</a>
+</body>
+</html>
+
